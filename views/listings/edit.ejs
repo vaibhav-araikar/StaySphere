@@ -1,0 +1,103 @@
+<% layout("layouts/boilerplate") %>
+<!-- This line specifies that this EJS template should use the "boilerplate" layout located in the "layouts" directory. It allows you to define a common structure for your pages and reuse it across different views. -->
+<body>
+  <div class="row">
+    <div class="col-8 offset-2">
+      <br /><br />
+      <h3>Edit Listing</h3>
+      <form
+        method="POST"
+        action="/listings/<%= listing._id %>?_method=PUT"
+        novalidate
+        class="needs-validation"
+      >
+        <div class="form-group mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            name="listing[title]"
+            placeholder="Enter Title"
+            value="<%= listing.title %>"
+            class="form-control"
+            required
+          />
+          <div class="valid-feedback">Title is valid!</div>
+          <div class="invalid-feedback">Please enter a title.</div>
+        </div>
+        <br />
+        <div class="form-group mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea name="listing[description]" class="form-control" required>
+<%= listing.description.trim() %></textarea
+          >
+          <!-- Trim the description to remove any leading or trailing whitespace before rendering it in the textarea -->
+        </div>
+        <br />
+        <div class="form-group mb-3">
+          <label for="image" class="form-label">Image URL</label>
+          <input
+            type="text"
+            name="listing[image]"
+            placeholder="Image URL"
+            value="<%= typeof listing.image === 'string' ? listing.image : listing.image.url %>"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Please enter an image URL.</div>
+        </div>
+        <br />
+
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="number"
+              name="listing[price]"
+              placeholder="Price"
+              value="<%= listing.price %>"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Please enter a price.</div>
+          </div>
+          <br />
+
+          <div class="form-group col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              name="listing[country]"
+              placeholder="Country"
+              value="<%= listing.country %>"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Please enter a country.</div>
+          </div>
+        </div>
+
+        <br />
+        <div class="form-group mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input
+            type="text"
+            name="listing[location]"
+            placeholder="Location"
+            value="<%= listing.location %>"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Please enter a location.</div>
+        </div>
+        <br />
+
+        <br />
+        <button type="submit" class="btn btn-dark update-listing-btn">
+          Update Listing
+        </button>
+        <br /><br />
+      </form>
+    </div>
+  </div>
+  <script src="/js/script.js"></script>
+</body>

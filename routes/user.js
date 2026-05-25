@@ -1,0 +1,60 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const router = express.Router();
+const User = require("../models/user.js");
+const wrapAsync = require("../utils/wrapAsync.js");
+const passport = require("passport");
+
+router.get("/signup", (req, res) => {
+  res.render("users/signup");
+});
+
+router.post(
+  "/signup",
+  wrapAsync(async (req, res) => {
+    try {
+      const { username, email, password } = req.body;
+      const newUser = new User({ username, email });
+      const registeredUser = await User.register(newUser, password);
+      console.log(registeredUser);
+      req.flash("success", "Welcome to Airbnb!");
+      res.redirect("/listings");
+    } catch (err) {
+      req.flash("error", err.message);
+      res.redirect("/signup");
+    }
+  }),
+);
+// async request because database me hum change kar rahe hai, toh hume wait karna padega jab tak database me change nahi hota, tab tak hum next line of code pe nahi ja sakte, isliye async request banayi hai.
+
+router.get("/login", (req, res) => {
+  res.render("users/login");
+});
+
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
+  async (req, res) => {
+    req.flash("success", "Welcome back!");
+    res.redirect("/listings");
+  },
+);
+
+router.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.flash("success", "You have been logged out!");
+    res.redirect("/listings");
+  });
+});
+
+// failureFlash: true ka matlab hai ki agar login me koi error aata hai, toh us error message ko flash message ke through user ko dikhaya jayega. Agar login successful hota hai, toh success flash message dikhaya jayega.
+
+// passport.authenticate("local", { ... }) middleware ko humne router.post("/login", ...) me use kiya hai, jisse jab bhi koi user login karne ki koshish karega, toh passport uske credentials ko verify karega. Agar credentials sahi hote hain, toh user ko login kar diya jayega aur success flash message dikhaya jayega. Agar credentials galat hote hain, toh user ko login page par wapas bhej diya jayega aur failure flash message dikhaya jayega.
+// and vo automatically user ki login info check karega, agar sahi hai toh user ko login kar dega, aur agar galat hai toh user ko login page par wapas bhej dega. Iske liye hume manually code likhne ki zarurat nahi hai, passport.authenticate middleware ye sab kuch handle kar leta hai.
+module.exports = router;
