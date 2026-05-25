@@ -43,7 +43,9 @@ router.get(
   "/:id",
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id)
+      .populate("reviews")
+      .populate("owner");
     // populate reviews field with the actual review documents instead of just their ObjectIds
     if (!listing) {
       req.flash("error", "Listing not found!");
@@ -59,6 +61,7 @@ router.post(
   validateListing,
   wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id; // Set the owner of the listing to the currently logged-in user
     await newListing.save();
     req.flash("success", "Listing created successfully!");
     res.redirect("/listings");

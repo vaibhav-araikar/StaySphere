@@ -11,11 +11,11 @@
       alt="listing image"
     />
     <div class="card-body">
-      <%= listing.description %> <br />
-      Price: &#8377;<%= listing.price.toLocaleString("en-IN") %> per night
-      <br />
-      Location: <%= listing.location %> <br />
-      Country: <%= listing.country %>
+      <p class="card-text">Owner: <%= listing.owner.username %></p>
+      <p class="card-text"><%= listing.description %></p>
+      <p class="card-text">Price: &#8377;<%= listing.price.toLocaleString("en-IN") %> per night</p>
+      <p class="card-text">Location: <%= listing.location %></p>
+      <p class="card-text">Country: <%= listing.country %></p>
     </div>
   </div>
 
