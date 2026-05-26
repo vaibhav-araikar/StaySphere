@@ -33,8 +33,10 @@ router.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id)
-      .populate("reviews")
-      .populate("owner");
+      .populate({ path: "reviews", populate: { path: "author" } })
+      .populate({ path: "owner" });
+    // {path: "reviews"} --> ek object pass kr rhe hai, jiska param hai path
+    // listing ko populate krne ke sath sath author ko bhi populate karenge and vo krne ke liye hume nested populate use krna padega
     // populate reviews field with the actual review documents instead of just their ObjectIds
     if (!listing) {
       req.flash("error", "Listing not found!");

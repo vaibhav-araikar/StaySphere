@@ -5,7 +5,11 @@ const ExpressError = require("../utils/expressError.js");
 // const { listingSchema, reviewSchema } = require("../schema.js");
 const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");
-const { validateReview } = require("../middleware.js");
+const {
+  validateReview,
+  isLoggedIn,
+  isReviewAuthor,
+} = require("../middleware.js");
 
 // Review routes  --> post request to create a new review for a listing
 
@@ -13,12 +17,15 @@ const { validateReview } = require("../middleware.js");
 router.post(
   "/",
   //listings/:id/reviews = /
+  isLoggedIn,
   validateReview,
   wrapAsync(async (req, res) => {
     console.log(req.body); // debug
 
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
+    newReview.author = req.user._id;
+    // new review ka author store kr rhe hai. and if user logged in hai then new user ka author req.user._id means logged in user banega
 
     listing.reviews.push(newReview);
 
@@ -30,7 +37,7 @@ router.post(
 );
 
 // Delete review route
-router.delete("/:reviewId", async (req, res) => {
+router.delete("/:reviewId", isLoggedIn, isReviewAuthor, async (req, res) => {
   let { id, reviewId } = req.params;
 
   await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
