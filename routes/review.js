@@ -2,23 +2,12 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/expressError.js");
-const { listingSchema, reviewSchema } = require("../schema.js");
+// const { listingSchema, reviewSchema } = require("../schema.js");
 const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");
+const { validateReview } = require("../middleware.js");
 
 // Review routes  --> post request to create a new review for a listing
-
-// validation middleware for review
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-
-  if (error) {
-    let errorMessage = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errorMessage);
-  } else {
-    next();
-  }
-};
 
 // Create review route
 router.post(

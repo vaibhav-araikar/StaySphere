@@ -1,3 +1,7 @@
+const Listing = require("./models/listing");
+const ExpressError = require("./utils/ExpressError.js");
+const { reviewSchema, listingSchema } = require("./schema.js");
+
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl;
@@ -14,4 +18,41 @@ module.exports.saveRedirectUrl = (req, res, next) => {
     res.locals.redirectUrl = req.session.redirectUrl;
   }
   next();
+};
+
+module.exports.isOwner = async (req, res, next) => {
+  let { id } = req.params;
+  let listing = await Listing.findById(id);
+
+  // check if the current user is the owner of the listing before allowing them to update it
+  if (!listing.owner.equals(res.locals.currentUser._id)) {
+    req.flash("error", "You do not have permission to edit this listing!");
+    return res.redirect(`/listings/${id}`);
+  }
+  next();
+};
+
+// validation middleware for listing and review
+module.exports.validateListing = (req, res, next) => {
+  let { error } = listingSchema.validate(req.body);
+
+  if (error) {
+    let errorMessage = error.details.map((el) => el.message).join(",");
+    // error.details is an array of objects, each object has a message property which contains the error message. We are mapping over the array and extracting the message property and joining them with a comma.
+    throw new ExpressError(400, errorMessage);
+  } else {
+    next();
+  }
+};
+
+// validation middleware for review
+module.exports.validateReview = (req, res, next) => {
+  let { error } = reviewSchema.validate(req.body);
+
+  if (error) {
+    let errorMessage = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(400, errorMessage);
+  } else {
+    next();
+  }
 };

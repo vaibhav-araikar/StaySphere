@@ -23,26 +23,31 @@
 </div>
 
 <!-- buttons -->
-<div class="btns">
-  <a
-    href="/listings/<%=listing._id%>/edit"
-    class="btn btn-dark col-1 offset-3 update-listing-btn"
-    >Edit Listing</a
-  >
+ <% if(currentUser && currentUser._id.equals(listing.owner._id)) { %>
+  <div class="btns">
+    <a
+      href="/listings/<%=listing._id%>/edit"
+      class="btn btn-dark col-1 offset-3 update-listing-btn"
+      >Edit Listing</a
+    >
 
-  <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-    <button type="submit" class="btn btn-dark offset-5">Delete Listing</button>
-  </form>
+    <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+      <button type="submit" class="btn btn-dark offset-5">Delete Listing</button>
+    </form>
+    </div>
 
-  <form action="/listings" method="GET">
-    <button type="submit" class="btn btn-dark offset-5">
-      Back to Listings
-    </button>
-  </form>
-  </div>
+    <form action="/listings" method="GET">
+      <button type="submit" class="btn btn-dark offset-5">
+        Back to Listings
+      </button>
+    </form>
+    </div>
+  <% } %>
+
   <hr>
 
   <!-- Review Form -->
+   <% if(currentUser)  { %>
   <div class="col-8 offset-3 mb-3">
     <h4>Leave a Review</h4>
     <form action="/listings/<%=listing._id%>/reviews" method="POST" novalidate class="needs-validation">
@@ -65,7 +70,8 @@
       </div>
       <button type="submit" class="btn btn-dark mt-2">Submit Review</button>
     </form>
-
+    <% } %>
+     
     <hr>
 
     <h4>Customer Reviews</h4>
