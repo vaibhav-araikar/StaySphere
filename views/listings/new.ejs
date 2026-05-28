@@ -4,8 +4,9 @@
       <div class="col-8 offset-2">   <!-- col is a bootstrap class that creates a column that is 8 units wide, and offset-2 creates a column that is 2 units wide on the left side, which centers the content on the page -->
         <br><br>
         <h3>Create New Listing</h3>
-          <form action="/listings" method="POST" novalidate class="needs-validation">   
+          <form action="/listings" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">   
             <!-- xadded novalidate and needs-validation class for client side validation using bootstrap -->
+             <!-- added enctype to multipart to send files or images to the backend -->
             <div class="form-group">
               <label for="title" class="form-label">Title</label>
               <input type="text" name="listing[title]" placeholder="Enter Title" class="form-control"
@@ -27,8 +28,8 @@
             <br />
 
             <div class="form-group">
-              <label for="image" class="form-label">Image URL</label>
-              <input type="text" name="listing[image]" placeholder="Image URL" class="form-control" required/>
+              <label for="image" class="form-label">Upload Image</label>
+              <input name="listing[image]" type="file" class="form-control" required/>
               <div class="invalid-feedback">Please enter an image URL.</div>
             </div>  
             <br />
