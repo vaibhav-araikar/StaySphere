@@ -8,6 +8,10 @@ const { validateListing } = require("../middleware.js");
 const { isLoggedIn } = require("../middleware.js");
 const { isOwner } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
+// the last two requirements means that "multer by default hamari files ko storage means cloud storage me store karega"
 
 // humne double dots (.) isliye lagaye kyuki sabhi files ek folder me nahi hai, uun sabki location different different hai, toh humne double dots (..) isliye lagaye kyuki hum ek folder ke andar hai aur uske andar se ek level upar jaake models folder ke andar listing.js file ko access karna hai. Agar humne double dots (..) nahi lagaye toh hum directly listing.js file ko access karne ki koshish karenge jo ki galat hoga kyuki wo file current folder me nahi hai.
 
@@ -15,7 +19,11 @@ const listingController = require("../controllers/listings.js");
 router
   .route("/")
   .get(wrapAsync(listingController.index))
-  .post(validateListing, wrapAsync(listingController.createListingPost));
+  .post(
+    upload.single("listing[image]"),
+    validateListing,
+    wrapAsync(listingController.createListingPost),
+  );
 
 // All routes using MVC Techniques
 // // Index Route - Show all listings
@@ -62,6 +70,7 @@ router
   .put(
     isLoggedIn,
     isOwner,
+    upload.single("listing[image]"),
     validateListing,
     wrapAsync(listingController.updateListing),
   )

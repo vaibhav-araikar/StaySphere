@@ -32,8 +32,11 @@ module.exports.showListing = async (req, res) => {
 
 // create listing POST
 module.exports.createListingPost = async (req, res, next) => {
+  let url = req.file.path;
+  let filename = req.file.filename;
   const newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id; // Set the owner of the listing to the currently logged-in user
+  newListing.image = { url, filename };
   await newListing.save();
   req.flash("success", "Listing created successfully!");
   res.redirect("/listings");
