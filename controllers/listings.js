@@ -37,6 +37,14 @@ module.exports.createListingPost = async (req, res, next) => {
   const newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id; // Set the owner of the listing to the currently logged-in user
   newListing.image = { url, filename };
+  // maps section
+  newListing.geometry = {
+    type: "Point",
+    coordinates: [
+      Number(req.body.listing.longitude),
+      Number(req.body.listing.latitude),
+    ],
+  };
   await newListing.save();
   req.flash("success", "Listing created successfully!");
   res.redirect("/listings");
@@ -50,13 +58,26 @@ module.exports.editListing = async (req, res) => {
     req.flash("error", "Listing not found!");
     return res.redirect("/listings");
   }
-  res.render("listings/edit.ejs", { listing });
+
+  let originalImageUrl = listing.image.url;
+  originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
+  res.render("listings/edit.ejs", { listing, originalImageUrl });
 };
 
 // update listing route
 module.exports.updateListing = async (req, res) => {
   let { id } = req.params;
-  await Listing.findByIdAndUpdate(id, req.body.listing);
+  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+
+  if (typeof req.file !== "undefined") {
+    //if upload image me image hongi tabhi ye run kro
+    let url = req.file.path;
+    let filename = req.file.filename;
+    listing.image = { url, filename };
+    await listing.save();
+    // console.log(req.file); to debug
+  }
+
   req.flash("success", "Listing updated successfully!");
   res.redirect(`/listings/${id}`);
 };

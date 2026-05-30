@@ -18,12 +18,19 @@
       </p>
       <p class="card-text">Location: <%= listing.location %></p>
       <p class="card-text">Country: <%= listing.country %></p>
-    </div>
+      <script>
+      const coordinates =
+        <%- JSON.stringify(listing.geometry.coordinates) %>;
+      </script>
+
+      <div class="col-8 offset-2 mt-4">
+        <h4>Where you'll be</h4>
+        <div id="map"></div>
+      </div>
   </div>
 </div>
 
 <br />
-
 <!-- buttons -->
 <div class="btns d-flex gap-3 justify-content-center mt-3">
 
@@ -41,7 +48,7 @@
   <% } %>
 
   <form action="/listings" method="GET">
-    <button type="submit" class="btn btn-dark">
+    <button type="submit" class="btn btn-dark mb-3">
       Back to Listings
     </button>
   </form>

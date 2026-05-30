@@ -70,7 +70,7 @@ router
   .put(
     isLoggedIn,
     isOwner,
-    upload.single("listing[image]"),
+    upload.single("listing[image]"), //multer hamari img ko parse karega cloud pe save hogi tabhi hum usko validate karenge
     validateListing,
     wrapAsync(listingController.updateListing),
   )

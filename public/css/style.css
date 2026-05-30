@@ -127,3 +127,19 @@
   padding-left: 0;
   padding-right: 0;
 }
+
+/* maps css */
+/* Maps section */
+#map {
+  height: 450px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+#current-location {
+  height: 38px;
+  width: 200px;
+  margin-bottom: 1px;
+  border-radius: 8px;
+}
