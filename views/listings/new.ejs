@@ -1,0 +1,104 @@
+<% layout("layouts/boilerplate") %>
+<body>
+  <div class="row">
+    <div class="col-8 offset-2">
+      <!-- col is a bootstrap class that creates a column that is 8 units wide, and offset-2 creates a column that is 2 units wide on the left side, which centers the content on the page -->
+      <br /><br />
+      <h3>Create New Listing</h3>
+      <form
+        action="/listings"
+        method="POST"
+        novalidate
+        class="needs-validation"
+        enctype="multipart/form-data"
+      >
+        <!-- xadded novalidate and needs-validation class for client side validation using bootstrap -->
+        <!-- added enctype to multipart to send files or images to the backend -->
+        <div class="form-group">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            name="listing[title]"
+            placeholder="Enter Title"
+            class="form-control"
+            required
+          />
+          <div class="valid-feedback">Title is valid!</div>
+        </div>
+        <br />
+
+        <div class="form-group">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            name="listing[description]"
+            placeholder="Enter Description"
+            class="form-control"
+            required
+          ></textarea>
+          <div class="invalid-feedback">Please enter a description.</div>
+        </div>
+        <br />
+
+        <div class="form-group">
+          <label for="image" class="form-label">Upload Image</label>
+          <input
+            name="listing[image]"
+            type="file"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Please enter an image URL.</div>
+        </div>
+        <br />
+
+        <!-- Price and Country are in same row -->
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input
+              type="number"
+              name="listing[price]"
+              placeholder="Price"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Please enter a price.</div>
+            <div class="valid-feedback">Price is valid!</div>
+          </div>
+
+          <br />
+
+          <div class="form-group col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input
+              type="text"
+              name="listing[country]"
+              placeholder="Country"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Please enter a country.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="location" class="form-label">Location</label>
+          <input
+            type="text"
+            name="listing[location]"
+            placeholder="Location"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Please enter a location.</div>
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-dark add-listing-btn">
+          Create Listing
+        </button>
+        <br /><br />
+      </form>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,13 @@
+<!-- //this success and error variables are coming from app.js file, jisme humne res.locals.success aur res.locals.error set kiya hai, jisse ye variables har ek route me available ho jate hain. Jab bhi hum kisi route me req.flash("success", "Your message here") ya req.flash("error", "Your message here") use karte hain, toh ye messages success aur error variables me store ho jate hain, jise hum yaha flash.ejs file me display kar sakte hain. Agar success variable me koi message hai, toh usse green alert box me dikhaya jayega, aur agar error variable me koi message hai, toh usse red alert box me dikhaya jayega. -->
+
+<% if(success && success.length) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert"><%= success %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if(error && error.length) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert"><%= error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
