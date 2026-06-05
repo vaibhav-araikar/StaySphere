@@ -104,31 +104,31 @@ app.get("/demouser", async (req, res) => {
   res.send(registeredUser);
 });
 
-//   Test listing route
-app.get(
-  "/testListing",
-  wrapAsync(async (req, res) => {
-    try {
-      let sampleListing = new Listing({
-        title: "Beautiful Beach House",
-        description: "A lovely beach house with stunning ocean views.",
-        image: "",
-        price: 250,
-        location: "Santa Monica, CA",
-        country: "USA",
-      });
+// //   Test listing route
+// app.get(
+//   "/testListing",
+//   wrapAsync(async (req, res) => {
+//     try {
+//       let sampleListing = new Listing({
+//         title: "Beautiful Beach House",
+//         description: "A lovely beach house with stunning ocean views.",
+//         image: "",
+//         price: 250,
+//         location: "Santa Monica, CA",
+//         country: "USA",
+//       });
 
-      await sampleListing.save();
+//       await sampleListing.save();
 
-      console.log("Sample saved");
+//       console.log("Sample saved");
 
-      res.send("Sample listing saved successfully!");
-    } catch (err) {
-      console.error("Error saving sample listing:", err);
-      res.send("Error occurred");
-    }
-  }),
-);
+//       res.send("Sample listing saved successfully!");
+//     } catch (err) {
+//       console.error("Error saving sample listing:", err);
+//       res.send("Error occurred");
+//     }
+//   }),
+// );
 
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
