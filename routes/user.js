@@ -128,3 +128,8 @@ module.exports = router;
 //     res.redirect("/listings");
 //   });
 // });
+
+// forgot password route
+router.get("/forgot-password", (req, res) => {
+  res.render("users/forgot-password");
+});

@@ -135,3 +135,18 @@
   width: 85vh;
   border-radius: 10px;
 }
+
+.tax-info {
+  display: inline;
+}
+
+.forgot-pass {
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: #ff385c;
+  font-weight: 500;
+}
+
+.forgot-pass:hover {
+  text-decoration: underline;
+}

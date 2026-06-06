@@ -7,9 +7,11 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 
 userSchema.plugin(passportLocalMongoose);
-// This plugin will add username and password fields to our user schema and also add some methods for authentication.
 
 module.exports = mongoose.model("User", userSchema);
