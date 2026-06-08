@@ -7,6 +7,11 @@ const passport = require("passport");
 const { saveRedirectUrl } = require("../middleware.js");
 const userController = require("../controllers/users.js");
 
+console.log("sendResetLink:", typeof userController.sendResetLink);
+console.log("showResetForm:", typeof userController.showResetForm);
+console.log("resetPassword:", typeof userController.resetPassword);
+console.log("verifyAccount:", typeof userController.verifyAccount);
+
 // // signup get request
 // router.get("/signup", (req, res) => {
 //   res.render("users/signup");
@@ -16,6 +21,25 @@ const userController = require("../controllers/users.js");
 // // signup post request
 // router.post("/signup", wrapAsync(userController.signUp));
 // used router.route for post signup
+
+const emailToUsername = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      req.flash("error", "Invalid email or password");
+      return res.redirect("/login");
+    }
+
+    req.body.username = user.username;
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
 
 // using router.route
 router
@@ -54,15 +78,43 @@ router
   })
   .post(
     saveRedirectUrl,
+
+    emailToUsername,
+
+    (req, res, next) => {
+      console.log("LOGIN ATTEMPT:");
+      console.log(req.body);
+      next();
+    },
+
     passport.authenticate("local", {
       failureRedirect: "/login",
       failureFlash: true,
     }),
+
     userController.login,
   );
 
 // logout
 router.get("/logout", userController.logout);
+
+// ================================
+// FORGOT PASSWORD ROUTES
+// ================================
+
+// forgot password page
+router.get("/forgot-password", (req, res) => {
+  res.render("users/forgot-password");
+});
+
+// send reset link
+router.post("/forgot-password", wrapAsync(userController.sendResetLink));
+
+// show reset password form
+router.get("/reset-password/:token", wrapAsync(userController.showResetForm));
+
+// update password
+router.post("/reset-password/:token", wrapAsync(userController.resetPassword));
 
 module.exports = router;
 
@@ -133,3 +185,6 @@ module.exports = router;
 router.get("/forgot-password", (req, res) => {
   res.render("users/forgot-password");
 });
+
+// account verification route
+router.get("/verify-account/:token", wrapAsync(userController.verifyAccount));

@@ -8,6 +8,15 @@ const userSchema = new Schema({
     required: true,
   },
 
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+
+  verificationToken: {
+    type: String,
+  },
+
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });
