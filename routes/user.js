@@ -188,3 +188,7 @@ router.get("/forgot-password", (req, res) => {
 
 // account verification route
 router.get("/verify-account/:token", wrapAsync(userController.verifyAccount));
+
+router.get("/trending", async (req, res) => {
+  res.render("users/trending");
+});
