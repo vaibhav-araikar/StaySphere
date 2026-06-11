@@ -76,6 +76,8 @@ router
   )
   .delete(isLoggedIn, wrapAsync(listingController.deleteListing));
 
+
+
 // isOwner is a middleware to check if the current user is the owner or not to edit the listing
 // isLoggedIn is a middleware to check if the user is logged in or not to edit the listing, kyuki agar user login nahi hai toh wo listing ko edit nahi kar sakta, toh pehle hum check karenge ki user login hai ya nahi, agar login hai toh phir hum check karenge ki wo listing ka owner hai ya nahi, agar wo listing ka owner hai toh hi wo listing ko edit kar sakta hai, agar wo listing ka owner nahi hai toh usko error message show karenge ki "You do not have permission to edit this listing!" aur usko wapas listing ke show page par redirect kar denge.
 // And all the above middlewares are stored in middleware.js file, toh humne unko import karke use kiya hai is listing.js file me, jisse hum apne routes me unko use kar sake and code ko clean and organized rakh sake.
