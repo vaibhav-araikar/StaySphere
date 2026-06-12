@@ -12,6 +12,7 @@ const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
 
+// alternative method is creating category to reduce bulkiness and improve scalability
 router.get("/trending", async (req, res) => {
   res.render("users/trending");
 });
