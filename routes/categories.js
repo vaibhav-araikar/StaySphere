@@ -11,8 +11,3 @@ const listingController = require("../controllers/listings.js");
 const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
-
-// alternative method is creating category to reduce bulkiness and improve scalability and reduce crashing of website
-router.get("/trending", async (req, res) => {
-  res.render("users/trending");
-});
