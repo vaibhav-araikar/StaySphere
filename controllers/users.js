@@ -214,15 +214,59 @@ module.exports.resetPassword = async (req, res) => {
 };
 
 // login
-module.exports.login = async (req, res) => {
+// login
+module.exports.login = async (req, res, next) => {
   if (!req.user.isVerified) {
-    req.logout((err) => {
-      if (err) {
-        console.log(err);
-      }
+    // Generate new verification token
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    req.user.verificationToken = verificationToken;
+
+    await req.user.save();
+
+    // Verification link
+    const verifyLink = `${req.protocol}://${req.get(
+      "host",
+    )}/verify-account/${verificationToken}`;
+
+    // Send verification email
+    await transporter.sendMail({
+      from: `"StaySphere" <${process.env.EMAIL_USER}>`,
+      to: req.user.email,
+      subject: "Verify Your StaySphere Account",
+
+      html: `
+        <h2>Verify Your Email</h2>
+
+        <p>Your account is not verified yet.</p>
+
+        <p>Please click the button below to verify your account.</p>
+
+        <p>
+          <a
+            href="${verifyLink}"
+            style="
+              background:#222;
+              color:white;
+              padding:10px 18px;
+              text-decoration:none;
+              border-radius:5px;
+            "
+          >
+            Verify Account
+          </a>
+        </p>
+      `,
     });
 
-    req.flash("error", "Please verify your email before logging in.");
+    req.logout((err) => {
+      if (err) return next(err);
+    });
+
+    req.flash(
+      "error",
+      "Your account is not verified. A new verification email has been sent to your registered email address.",
+    );
 
     return res.redirect("/login");
   }
