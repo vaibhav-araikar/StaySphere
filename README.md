@@ -27,7 +27,7 @@ StaySphere is a full-stack Airbnb-inspired web application that enables users to
 
 ### ⭐ Reviews & Ratings
 
-* Add and manage reviews for listings.
+* Add and manage reviews for all listings.
 * Delete reviews with proper authorization.
 * Star-based rating system for user feedback.
 
